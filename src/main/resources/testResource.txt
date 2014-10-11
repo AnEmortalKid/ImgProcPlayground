@@ -1,0 +1,1 @@
+This file is just a fake resource text file to confirm I am loading resources correctly
