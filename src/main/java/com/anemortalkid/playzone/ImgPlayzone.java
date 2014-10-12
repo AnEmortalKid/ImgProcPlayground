@@ -1,19 +1,24 @@
 package com.anemortalkid.playzone;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import com.anemortalkid.imgutils.ImgHelper;
 import com.anemortalkid.imgutils.Imshow;
+import com.anemortalkid.imgutils.MatHelper;
 
+/**
+ * A place to play with images
+ * 
+ * @author jan_monterrubio
+ * 
+ */
 public class ImgPlayzone {
 
 	static {
@@ -23,32 +28,39 @@ public class ImgPlayzone {
 	// ClassLoader classloader = Thread.currentThread().getContextClassLoader()
 	// InputStream is = classloader.getResourceAsStream("test.csv");
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws MalformedURLException,
+			IllegalArgumentException {
 
-		BufferedImage bi = null;
-		try {
-			bi = ImgHelper.toBufferedImage("shirts/shirt1-1.jpg");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Imshow.show(bi, "BuffImage");
 		Mat catMat = null;
 		try {
-			catMat = ImgHelper.toMatrix("shirts/shirt1-1.jpg");
+			catMat = ImgHelper.toMatrix("shirts/shirt2-1.jpg");
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Imshow.show(catMat, "Cat Mat");
-		int rgb = bi.getRGB(0, 0);
-		double[] rgb2 = catMat.get(0, 0);
-		System.out.println("Rgb:" + rgb);
-		System.out.println("[" + getRed(rgb) + "," + getGreen(rgb) +"," + getBlue(rgb) + " a:"+getAlpha(rgb)+"]");
-		System.out.println(Arrays.toString(rgb2));
+		Mat grayscale = MatHelper.toGrayscale(catMat);
+		Imshow.show(grayscale, "Gray Scale");
+
+		// threshold the thing
+		// thresholdOnRange(grayscale, 0, 0, 5);
+		// thresholdOnRange(grayscale, 0, grayscale.cols() - 1, 5);
+
+		Mat clone = emptyMat(grayscale);
+		Imgproc.resize(grayscale, clone, new Size(600, 800));
+		double colorJumperValue = colorJumpFinder(clone, clone.rows() / 2, 0,
+				clone.rows() / 2, clone.cols() / 2);
+		Imshow.show(grayscale, "Color Jump Finder");
+		Imshow.show(clone, "Color Jump Finder Clone");
+
+		Mat noEdgeClone = emptyMat(grayscale);
+		Imgproc.resize(grayscale, noEdgeClone, new Size(600, 800));
+
+		System.out.println("Cols: " + noEdgeClone.cols() + " Rows; "
+				+ noEdgeClone.rows());
+		System.out.println("color jumper value:" + colorJumperValue);
+		showThresholds(noEdgeClone, colorJumperValue, 255.0);
+
 		// Imgproc.erode(catMat, catMat,
 		// Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2,2)));
 		// Mat grayMat = new Mat(catMat.rows(), catMat.cols(), CvType.CV_8U);
@@ -73,6 +85,36 @@ public class ImgPlayzone {
 		// See what happens
 	}
 
+	public static double colorJumpFinder(Mat matrix, int rowStart,
+			int colStart, int endRow, int endCol) {
+		double tolerance = 30;
+		double startVal = matrix.get(rowStart, colStart)[0];
+		double minRange = startVal - tolerance;
+		double maxRange = startVal + tolerance;
+		double minValFound = startVal;
+		Point pointOfJump = null;
+		for (int r = rowStart; r <= endRow; r++)
+			for (int c = colStart; c <= endCol; c++) {
+				double[] data = matrix.get(r, c);
+				double dataVal = data[0];
+				if (dataVal < minRange || dataVal > maxRange) {
+					System.out.println("R,C:" + r + "," + c + "=" + dataVal
+							+ ". CloneVal:" + matrix.get(r, c)[0]);
+					if (pointOfJump == null) {
+						pointOfJump = new Point(c, r);
+					}
+				} else {
+					if (dataVal < minValFound)
+						minValFound = dataVal;
+				}
+			}
+
+		System.out.println("Point of jump:" + pointOfJump);
+		Core.rectangle(matrix, new Point(colStart, rowStart), pointOfJump,
+				new Scalar(0, 255, 0), 3);
+		return minValFound;
+	}
+
 	public static Mat emptyMat(Mat fromMat) {
 		Mat mat = new Mat(fromMat.cols(), fromMat.rows(), fromMat.type());
 		return mat;
@@ -86,10 +128,8 @@ public class ImgPlayzone {
 	 * @param colLoc
 	 * @param pixelRange
 	 */
-	public static void thresholdOnRange(Mat toThreshold, int rowLoc,
-			int colLoc, int pixelRange) {
-		List<Double> valuesToThresh = new ArrayList<>();
-
+	public static void thresholdOnArea(Mat toThreshold, int rowLoc, int colLoc,
+			int pixelRange) {
 		/*
 		 * 1. Grab pixels within the ranges 2. Get the values and put it in the
 		 * thresh thing 3. Min 4. Threshold on min
@@ -105,6 +145,26 @@ public class ImgPlayzone {
 		if (rowLocMaxBound > rowLocMax)
 			rowLocMaxBound = rowLocMax;
 
+		int colLocMinBound = colLoc - pixelRange;
+		int colLocMaxBound = colLoc + pixelRange;
+		int colLocMin = 0;
+		int colLocMax = toThreshold.cols();
+		if (colLocMinBound < colLocMin)
+			colLocMinBound = colLocMin;
+		if (colLocMaxBound > colLocMax)
+			colLocMaxBound = colLocMax;
+		double minValue = 255.0;
+		for (int r = rowLocMinBound; r < rowLocMaxBound; r++)
+			for (int c = colLocMinBound; c < colLocMaxBound; c++) {
+				double[] pixelVals = toThreshold.get(r, c);
+				double pixelValue = pixelVals[0]; // assuming it is gray here
+				if (pixelValue < minValue)
+					minValue = pixelValue;
+			}
+		Mat threshBinMat = emptyMat(toThreshold);
+		Imgproc.threshold(toThreshold, threshBinMat, minValue, 255.0,
+				Imgproc.THRESH_BINARY);
+		Imshow.show(threshBinMat, "ThreshBinRange");
 	}
 
 	public static void showThresholds(Mat toThreshold, double value, double max) {
@@ -157,7 +217,7 @@ public class ImgPlayzone {
 		int a = (argb >> 24) & 0xFF;
 		return b;
 	}
-	
+
 	private static int getAlpha(int argb) {
 		int r = (argb) & 0xFF;
 		int g = (argb >> 8) & 0xFF;

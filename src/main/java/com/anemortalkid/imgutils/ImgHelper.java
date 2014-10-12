@@ -67,18 +67,29 @@ public class ImgHelper {
 		URL resource = ResourceHelper.loadResource(filePath);
 		return ImageIO.read(resource);
 	}
-	
-	public static Mat toMatrix(String filePath) throws MalformedURLException, IllegalArgumentException
-	{
-		//Works weird on windows, returning blue image :(
-		String fullPath = "src/main/resources/" + filePath;
+
+	/**
+	 * Creates a {@link Mat} from the resource located at the given filePath
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws IllegalArgumentException
+	 */
+	public static Mat toMatrix(String filePath) throws MalformedURLException,
+			IllegalArgumentException {
+		String fullPath = ResourceHelper.getResourcePath(filePath);
 		Mat mat = Highgui.imread(fullPath);
-		System.out.println(mat.channels());
-		return mat;
+		return MatHelper.fromBGR2RGB(mat);
 	}
 
+	/**
+	 * Creates a {@link Mat} which represents the given BufferedImage
+	 * 
+	 * @param bufferedImage
+	 * @return
+	 */
 	public static Mat toMatrix(BufferedImage bufferedImage) {
-		//Works weird, returning blue image :(
 		int imageType = bufferedImage.getType();
 		System.out.println("ImageType:" + imageType);
 		int matrixType = CvType.CV_8UC3;
@@ -89,17 +100,8 @@ public class ImgHelper {
 				.getDataBuffer()).getData();
 
 		Mat matrix = new Mat(new Size(bufferedImage.getWidth(),
-				bufferedImage.getHeight()), CvType.CV_8UC3);
+				bufferedImage.getHeight()), matrixType);
 		matrix.put(0, 0, pixels);
-		return matrix;
-
-		// byte[] pixels = ((DataBufferByte)
-		// image.getRaster().getDataBuffer()).getData();
-		/*
-		 * 2. Then you can simply put it to Mat if you set type to CV_8UC3
-		 * 
-		 * image_final.put(0, 0, pixels);
-		 */
-
+		return MatHelper.fromBGR2RGB(matrix);
 	}
 }

@@ -41,4 +41,16 @@ public class ResourceHelper {
 		return url;
 	}
 
+	/**
+	 * Returns the relative path from src/main/resources to the given
+	 * resourceName
+	 * 
+	 * @param resourceName
+	 *            the subpath for the resource
+	 * @return a relative path to src/main/resources
+	 */
+	public static String getResourcePath(String resourceName) {
+		return RESOURCES_DIR + resourceName;
+	}
+
 }
