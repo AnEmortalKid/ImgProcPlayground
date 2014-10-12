@@ -47,7 +47,7 @@ public class ImgPlayzone {
 		int rgb = bi.getRGB(0, 0);
 		double[] rgb2 = catMat.get(0, 0);
 		System.out.println("Rgb:" + rgb);
-		System.out.println("[" + getRed(rgb) + "," + getGreen(rgb) +"," + getBlue(rgb) + "Alpha:"+getAlpha(rgb)+"]");
+		System.out.println("[" + getRed(rgb) + "," + getGreen(rgb) +"," + getBlue(rgb) + " a:"+getAlpha(rgb)+"]");
 		System.out.println(Arrays.toString(rgb2));
 		// Imgproc.erode(catMat, catMat,
 		// Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2,2)));
