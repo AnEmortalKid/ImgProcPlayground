@@ -1,12 +1,17 @@
 package com.anemortalkid.imgutils;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.highgui.Highgui;
 
 import com.anemortalkid.resources.ResourceHelper;
 
@@ -33,7 +38,10 @@ public class ImgHelper {
 		int width = inputMat.cols();
 		byte[] imgData = new byte[(int) (inputMat.cols() * inputMat.rows() * inputMat
 				.elemSize())];
-		int type = inputMat.channels();
+		int type = BufferedImage.TYPE_BYTE_GRAY;
+		if (inputMat.channels() > 1) {
+			type = BufferedImage.TYPE_3BYTE_BGR;
+		}
 
 		// Copy the data into the matrix
 		inputMat.get(0, 0, imgData);
@@ -58,5 +66,40 @@ public class ImgHelper {
 			throws IOException {
 		URL resource = ResourceHelper.loadResource(filePath);
 		return ImageIO.read(resource);
+	}
+	
+	public static Mat toMatrix(String filePath) throws MalformedURLException, IllegalArgumentException
+	{
+		//Works weird on windows, returning blue image :(
+		String fullPath = "src/main/resources/" + filePath;
+		Mat mat = Highgui.imread(fullPath);
+		System.out.println(mat.channels());
+		return mat;
+	}
+
+	public static Mat toMatrix(BufferedImage bufferedImage) {
+		//Works weird, returning blue image :(
+		int imageType = bufferedImage.getType();
+		System.out.println("ImageType:" + imageType);
+		int matrixType = CvType.CV_8UC3;
+		if (imageType == BufferedImage.TYPE_BYTE_GRAY)
+			matrixType = CvType.CV_8UC1;
+
+		byte[] pixels = ((DataBufferByte) bufferedImage.getRaster()
+				.getDataBuffer()).getData();
+
+		Mat matrix = new Mat(new Size(bufferedImage.getWidth(),
+				bufferedImage.getHeight()), CvType.CV_8UC3);
+		matrix.put(0, 0, pixels);
+		return matrix;
+
+		// byte[] pixels = ((DataBufferByte)
+		// image.getRaster().getDataBuffer()).getData();
+		/*
+		 * 2. Then you can simply put it to Mat if you set type to CV_8UC3
+		 * 
+		 * image_final.put(0, 0, pixels);
+		 */
+
 	}
 }
