@@ -34,9 +34,9 @@ public class TrhesholdPlayground {
 		}
 		Mat destination = new Mat(source.rows(), source.cols(), source.type());
 		Imgproc.threshold(source, destination, 127, 255, Imgproc.THRESH_TOZERO);
-		Imshow.show(destination, "Thresh To Zero");
+		Imshow.imshow("Thresh To Zero", destination);
 		Mat destination2 = new Mat(source.rows(), source.cols(), source.type());
 		Imgproc.threshold(source, destination2, 127, 255, Imgproc.THRESH_BINARY);
-		Imshow.show(destination2, "Thresh To Binary");
+		Imshow.imshow("Thresh To Binary", destination2);
 	}
 }

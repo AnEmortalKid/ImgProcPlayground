@@ -33,14 +33,14 @@ public class ImgPlayzone {
 
 		Mat catMat = null;
 		try {
-			catMat = ImgHelper.toMatrix("shirts/shirt2-1.jpg");
+			catMat = ImgHelper.toMatrix("shirts/shirt1-1.jpg");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 		Mat grayscale = MatHelper.toGrayscale(catMat);
-		Imshow.show(grayscale, "Gray Scale");
+		Imshow.imshow("Gray Scale", grayscale);
 
 		// threshold the thing
 		// thresholdOnRange(grayscale, 0, 0, 5);
@@ -50,8 +50,8 @@ public class ImgPlayzone {
 		Imgproc.resize(grayscale, clone, new Size(600, 800));
 		double colorJumperValue = colorJumpFinder(clone, clone.rows() / 2, 0,
 				clone.rows() / 2, clone.cols() / 2);
-		Imshow.show(grayscale, "Color Jump Finder");
-		Imshow.show(clone, "Color Jump Finder Clone");
+		Imshow.imshow("Color Jump Finder", grayscale);
+		Imshow.imshow("Color Jump Finder Clone", clone);
 
 		Mat noEdgeClone = emptyMat(grayscale);
 		Imgproc.resize(grayscale, noEdgeClone, new Size(600, 800));
@@ -87,10 +87,11 @@ public class ImgPlayzone {
 
 	public static double colorJumpFinder(Mat matrix, int rowStart,
 			int colStart, int endRow, int endCol) {
-		double tolerance = 30;
+		double[] mid = matrix.get(endRow-rowStart/2, endCol-colStart/2);
 		double startVal = matrix.get(rowStart, colStart)[0];
-		double minRange = startVal - tolerance;
-		double maxRange = startVal + tolerance;
+		double tolerance = Math.abs(mid[0]-startVal);
+		double minRange = startVal-tolerance;
+		double maxRange = startVal+tolerance;
 		double minValFound = startVal;
 		Point pointOfJump = null;
 		for (int r = rowStart; r <= endRow; r++)
@@ -112,6 +113,7 @@ public class ImgPlayzone {
 		System.out.println("Point of jump:" + pointOfJump);
 		Core.rectangle(matrix, new Point(colStart, rowStart), pointOfJump,
 				new Scalar(0, 255, 0), 3);
+		System.out.println("Mid:"+(endRow-rowStart/2)+","+(endCol-colStart/2) + " MidVal:" + mid[0]);
 		return minValFound;
 	}
 
@@ -164,34 +166,34 @@ public class ImgPlayzone {
 		Mat threshBinMat = emptyMat(toThreshold);
 		Imgproc.threshold(toThreshold, threshBinMat, minValue, 255.0,
 				Imgproc.THRESH_BINARY);
-		Imshow.show(threshBinMat, "ThreshBinRange");
+		Imshow.imshow("ThreshBinRange", threshBinMat);
 	}
 
 	public static void showThresholds(Mat toThreshold, double value, double max) {
 		Mat threshBinMat = emptyMat(toThreshold);
 		Imgproc.threshold(toThreshold, threshBinMat, value, max,
 				Imgproc.THRESH_BINARY);
-		Imshow.show(threshBinMat, "Binary Threshold");
+		Imshow.imshow("Binary Threshold", threshBinMat);
 
 		Mat threshBinInvMat = emptyMat(toThreshold);
 		Imgproc.threshold(toThreshold, threshBinInvMat, value, max,
 				Imgproc.THRESH_BINARY_INV);
-		Imshow.show(threshBinInvMat, "Inverted Binary Threshold");
+		Imshow.imshow("Inverted Binary Threshold", threshBinInvMat);
 
 		Mat threshToZero = emptyMat(toThreshold);
 		Imgproc.threshold(toThreshold, threshToZero, value, max,
 				Imgproc.THRESH_TOZERO);
-		Imshow.show(threshToZero, "To Zero Threshold");
+		Imshow.imshow("To Zero Threshold", threshToZero);
 
 		Mat threshToZeroInv = emptyMat(toThreshold);
 		Imgproc.threshold(toThreshold, threshToZeroInv, value, max,
 				Imgproc.THRESH_TOZERO_INV);
-		Imshow.show(threshToZeroInv, "Inverted To Zero Threshold");
+		Imshow.imshow("Inverted To Zero Threshold", threshToZeroInv);
 
 		Mat threshTrunc = emptyMat(toThreshold);
 		Imgproc.threshold(toThreshold, threshTrunc, value, max,
 				Imgproc.THRESH_TRUNC);
-		Imshow.show(threshTrunc, "Trunc Threshold");
+		Imshow.imshow("Trunc Threshold", threshTrunc);
 	}
 
 	private static int getRed(int argb) {

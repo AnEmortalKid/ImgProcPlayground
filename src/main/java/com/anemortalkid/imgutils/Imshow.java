@@ -23,15 +23,18 @@ import org.opencv.imgproc.Imgproc;
  */
 public class Imshow {
 
+	private static final int DEF_HEIGHT = 800;
+	private static final int DEF_WIDTH = 600;
+
 	/**
 	 * Displays the given {@link Mat} in a frame of the default size
 	 * 
 	 * @param matrix
 	 *            the {@link Mat} to display
 	 */
-	public static void show(Mat matrix) {
+	public static void imshow(Mat matrix) {
 		BufferedImage image = ImgHelper.toBufferedImage(matrix);
-		show(image);
+		imshow(image);
 	}
 
 	/**
@@ -40,7 +43,7 @@ public class Imshow {
 	 * @param image
 	 *            the {@link BufferedImage} to display
 	 */
-	public static void show(BufferedImage image) {
+	public static void imshow(BufferedImage image) {
 		JFrame imshowFrame = getFrameWithImage(image);
 		imshowFrame.setVisible(true);
 	}
@@ -49,27 +52,26 @@ public class Imshow {
 	 * Displays the given {@link Mat} in a frame of the default size with the
 	 * given title
 	 * 
-	 * @param matrix
-	 *            the {@link Mat} to display
 	 * @param title
 	 *            the title of the frame
+	 * @param matrix
+	 *            the {@link Mat} to display
 	 */
-	public static void show(Mat matrix, String title) {
+	public static void imshow(String title, Mat matrix) {
 		BufferedImage image = ImgHelper.toBufferedImage(matrix);
-		show(image, title);
+		imshow(title, image);
 	}
 
 	/**
 	 * Displays the given {@link BufferedImage} in a frame of the default size
 	 * with the given title
 	 * 
-	 * @param image
-	 *            the {@link BufferedImage} to display
-	 * 
 	 * @param title
 	 *            the title of the frame
+	 * @param image
+	 *            the {@link BufferedImage} to display
 	 */
-	public static void show(BufferedImage image, String title) {
+	public static void imshow(String title, BufferedImage image) {
 		JFrame imshowFrame = getFrameWithImage(image);
 		imshowFrame.setTitle(title);
 		imshowFrame.setVisible(true);
@@ -86,7 +88,7 @@ public class Imshow {
 		frame.setResizable(true);
 		frame.setLayout(new BorderLayout());
 		frame.add(panel, BorderLayout.CENTER);
-		frame.setSize(new Dimension(600, 800));
+		frame.setSize(new Dimension(DEF_WIDTH, DEF_HEIGHT));
 		return frame;
 	}
 

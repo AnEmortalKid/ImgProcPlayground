@@ -21,7 +21,7 @@ public class MatHelper {
 	 * @return a blank matrix of the same size and type
 	 */
 	public static Mat emptyMat(Mat fromMat) {
-		Mat mat = new Mat(fromMat.cols(), fromMat.rows(), fromMat.type());
+		Mat mat = new Mat(fromMat.rows(), fromMat.cols(), fromMat.type());
 		return mat;
 	}
 
@@ -36,7 +36,7 @@ public class MatHelper {
 	 * @return a blank matrix of the same size and type
 	 */
 	public static Mat emptyMat(Mat fromMat, int matType) {
-		Mat mat = new Mat(fromMat.cols(), fromMat.rows(), matType);
+		Mat mat = new Mat(fromMat.rows(), fromMat.cols(), matType);
 		return mat;
 	}
 

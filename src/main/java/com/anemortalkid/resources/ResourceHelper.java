@@ -53,4 +53,16 @@ public class ResourceHelper {
 		return RESOURCES_DIR + resourceName;
 	}
 
+	/**
+	 * Returns the relative path from src/main/resources to the given
+	 * resourceName, without the extension
+	 * 
+	 * @param resourceName
+	 *            the subpath for the resource
+	 * @return a relative path to src/main/resources
+	 */
+	public static String getJPGResourcePath(String resourceName) {
+		return RESOURCES_DIR + resourceName + ".jpg";
+	}
+
 }
