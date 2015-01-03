@@ -1,7 +1,6 @@
 package com.anemortalkid.backgroundremoval;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.net.MalformedURLException;
 
 import javax.swing.JFrame;
@@ -9,10 +8,15 @@ import javax.swing.JFrame;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 
-import com.anemortalkid.imgutils.ImgHelper;
+import com.anemortalkid.imgutils.ImageConstants;
 import com.anemortalkid.imgutils.Imshow;
-import com.anemortalkid.imgutils.MatHelper;
+import com.anemortalkid.shapedrawer.TShirtShapeDrawer;
 
+/**
+ * Tests the background remover and color averager
+ * @author jan_monterrubio
+ *
+ */
 public class BackgroundRemoverTest {
 
 	static {
@@ -20,14 +24,13 @@ public class BackgroundRemoverTest {
 	}
 
 	public static void main(String[] args) throws MalformedURLException, IllegalArgumentException {
-		Mat img = ImgHelper.toMatrix("shirts/shirt6-1.jpg");
+		Mat img = ImageConstants.SHIRT3_1;
 		Imshow.imshow("Original", img);
 		Mat removed = BackgroundRemover.removeBackground(img);
 		Imshow.imshow("Removed", removed);
 		
-		ShapeDrawer sd = new ShapeDrawer(averageColor(removed));
+		TShirtShapeDrawer sd = new TShirtShapeDrawer(averageColor(removed));
 		sd.setTitle("Average Color");
-		sd.setSize(new Dimension(600,600));
 		sd.setVisible(true);
 		sd.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

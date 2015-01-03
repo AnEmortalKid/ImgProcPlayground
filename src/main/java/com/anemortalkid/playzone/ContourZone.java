@@ -19,7 +19,7 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import com.anemortalkid.imgutils.ImgCache;
+import com.anemortalkid.imgutils.ImageConstants;
 import com.anemortalkid.imgutils.ImgHelper;
 import com.anemortalkid.imgutils.MatHelper;
 
@@ -43,7 +43,7 @@ public class ContourZone {
 
 	public static void main(String[] args) throws MalformedURLException,
 			IllegalArgumentException, URISyntaxException {
-		Mat src = ImgCache.SHIRT3_1;
+		Mat src = ImageConstants.SHIRT3_1;
 
 		// convert to gray and blur
 		Mat src_gray = MatHelper.toGrayscale(src);

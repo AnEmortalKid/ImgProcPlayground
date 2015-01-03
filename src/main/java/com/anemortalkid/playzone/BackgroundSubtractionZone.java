@@ -13,7 +13,7 @@ import org.opencv.core.Mat;
 import org.opencv.highgui.VideoCapture;
 import org.opencv.video.BackgroundSubtractorMOG;
 
-import com.anemortalkid.imgutils.ImgCache;
+import com.anemortalkid.imgutils.ImageConstants;
 import com.anemortalkid.imgutils.ImgHelper;
 
 public class BackgroundSubtractionZone {

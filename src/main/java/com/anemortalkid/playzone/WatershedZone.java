@@ -31,11 +31,11 @@ public class WatershedZone {
 	public static void main(String[] args) throws MalformedURLException,
 			IllegalArgumentException {
 
-		Mat img = ImgHelper.toMatrix("shirts/shirt3-1.jpg");
+		Mat img = ImgHelper.toMatrix("shirts/shirt7-1.jpg");
 		// Mat img = ImgHelper.toMatrix("water_coins.jpg");
 		Mat gray = MatHelper.toGrayscale(img);
 		Mat src_thresh = MatHelper.emptyMat(gray);
-		double val = Imgproc.threshold(gray, src_thresh, 0.0, 255,
+		double val = Imgproc.threshold(gray, src_thresh, 100.0, 255,
 				Imgproc.THRESH_BINARY_INV + Imgproc.THRESH_OTSU);
 		imshow("Src_Tresh", src_thresh);
 

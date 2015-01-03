@@ -1,18 +1,22 @@
 package com.anemortalkid.backgroundremoval;
 
-import static com.anemortalkid.imgutils.Imshow.imshow;
-
 import org.opencv.core.Core;
+import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Size;
-import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.imgproc.Imgproc;
 
 import com.anemortalkid.imgutils.MatHelper;
 
+/**
+ * Performs removing of the background for a given image
+ * 
+ * @author jan_monterrubio
+ * 
+ */
 public class BackgroundRemover {
 
 	static {
@@ -27,7 +31,7 @@ public class BackgroundRemover {
 				Imgproc.THRESH_BINARY_INV + Imgproc.THRESH_OTSU);
 
 		// Noise removal
-		Mat kernel = MatOfPoint2f.eye(new Size(3, 3), CvType.CV_8U);
+		Mat kernel = MatOfPoint2f.eye(new Size(2, 2), CvType.CV_8U);
 		Mat opening = MatHelper.emptyMat(src_thresh);
 		Imgproc.morphologyEx(src_thresh, opening, Imgproc.MORPH_OPEN, kernel);
 
