@@ -8,6 +8,7 @@ import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import com.anemortalkid.imgutils.ImgHelper;
@@ -18,7 +19,7 @@ import com.anemortalkid.resources.ResourceHelper;
  * Uses the provided banana_classifier.xml to find bananas in given images
  * 
  * @author jan_monterrubio
- * @see http
+ * @see http 
  *      ://coding-robin.de/2013/07/22/train-your-own-opencv-haar-classifier.html
  */
 public class HaarBananaZone {
@@ -43,7 +44,8 @@ public class HaarBananaZone {
 		for (Rect rect : rects) {
 			Point origin = new Point(rect.x, rect.y);
 			Point bound = new Point(rect.x + rect.width, rect.y + rect.height);
-			Core.rectangle(banTest, origin, bound, new Scalar(255.0, 0, 0), 3);
+			Imgproc.rectangle(banTest, origin, bound, new Scalar(255.0, 0, 0),
+					3);
 		}
 		Imshow.imshow("banAfter", banTest);
 	}

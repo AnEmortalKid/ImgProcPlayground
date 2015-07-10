@@ -53,7 +53,7 @@ public class TemplateMatcherDemo {
 		}
 
 		// / Show me what you got
-		Core.rectangle(img, matchLoc, new Point(matchLoc.x + templ.cols(),
+		Imgproc.rectangle(img, matchLoc, new Point(matchLoc.x + templ.cols(),
 				matchLoc.y + templ.rows()), new Scalar(0, 255, 0));
 
 		// Save the visualized detection.

@@ -16,7 +16,6 @@ import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
 import com.anemortalkid.imgutils.ImgHelper;
@@ -24,6 +23,7 @@ import com.anemortalkid.imgutils.MatHelper;
 
 public class WatershedZone {
 	static final Random randy = new Random();
+	
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
@@ -31,7 +31,7 @@ public class WatershedZone {
 	public static void main(String[] args) throws MalformedURLException,
 			IllegalArgumentException {
 
-		Mat img = ImgHelper.toMatrix("shirts/shirt7-1.jpg");
+		Mat img = ImgHelper.toMatrix("shirts/shirt6-1.jpg");
 		// Mat img = ImgHelper.toMatrix("water_coins.jpg");
 		Mat gray = MatHelper.toGrayscale(img);
 		Mat src_thresh = MatHelper.emptyMat(gray);
@@ -97,7 +97,7 @@ public class WatershedZone {
 		imshow("target", img);
 
 		Mat mulResult = MatHelper.emptyMat(img);
-		Core.multiply(sure_fg_cv, graysc, mulResult);
+		Core.multiply(sure_fg_cv, graysc, mulResult, 1.0, -1);
 		imshow("mulresult", mulResult);
 		imshow("ColorMult", colorMultiplied(sure_fg_cv, img));
 	}

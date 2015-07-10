@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
-import org.opencv.highgui.Highgui;
+import org.opencv.imgcodecs.Imgcodecs;
 
 import com.anemortalkid.resources.ResourceHelper;
 
@@ -79,7 +79,7 @@ public class ImgHelper {
 	public static Mat toMatrix(String filePath) throws MalformedURLException,
 			IllegalArgumentException {
 		String fullPath = ResourceHelper.getResourcePath(filePath);
-		Mat mat = Highgui.imread(fullPath);
+		Mat mat = Imgcodecs.imread(fullPath);
 		return MatHelper.fromBGR2RGB(mat);
 	}
 

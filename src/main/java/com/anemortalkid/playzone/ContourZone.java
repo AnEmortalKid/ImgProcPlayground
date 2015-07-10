@@ -20,7 +20,6 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import com.anemortalkid.imgutils.ImageConstants;
-import com.anemortalkid.imgutils.ImgHelper;
 import com.anemortalkid.imgutils.MatHelper;
 
 /**
@@ -97,7 +96,7 @@ public class ContourZone {
 
 			// draw enclosing rectangle (all same color, but you could use
 			// variable i to make them unique)
-			Core.rectangle(contoursFrame, new Point(rect.x, rect.y), new Point(
+			Imgproc.rectangle(contoursFrame, new Point(rect.x, rect.y), new Point(
 					rect.x + rect.width, rect.y + rect.height), new Scalar(255,
 					0, 0), 3);
 		}

@@ -111,7 +111,7 @@ public class ImgPlayzone {
 			}
 
 		System.out.println("Point of jump:" + pointOfJump);
-		Core.rectangle(matrix, new Point(colStart, rowStart), pointOfJump,
+		Imgproc.rectangle(matrix, new Point(colStart, rowStart), pointOfJump,
 				new Scalar(0, 255, 0), 3);
 		System.out.println("Mid:"+(endRow-rowStart/2)+","+(endCol-colStart/2) + " MidVal:" + mid[0]);
 		return minValFound;

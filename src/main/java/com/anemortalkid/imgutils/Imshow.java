@@ -9,7 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.opencv.core.Mat;
-import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
 /**
@@ -63,6 +62,23 @@ public class Imshow {
 	}
 
 	/**
+	 * Displays the given {@link Mat} in a frame of the specified
+	 * windowDimension size with the given title
+	 * 
+	 * @param title
+	 *            the title of the frame
+	 * @param matrix
+	 *            the {@link Mat} to display
+	 * @param windowDimension
+	 *            the {@link Dimension} to set the image frame to
+	 */
+	public static void imshow(String title, Mat matrix,
+			Dimension windowDimension) {
+		BufferedImage image = ImgHelper.toBufferedImage(matrix);
+		imshow(title, image, windowDimension);
+	}
+
+	/**
 	 * Displays the given {@link BufferedImage} in a frame of the default size
 	 * with the given title
 	 * 
@@ -74,6 +90,25 @@ public class Imshow {
 	public static void imshow(String title, BufferedImage image) {
 		JFrame imshowFrame = getFrameWithImage(image);
 		imshowFrame.setTitle(title);
+		imshowFrame.setVisible(true);
+	}
+
+	/**
+	 * Displays the given {@link BufferedImage} in a frame of the specified
+	 * windowDimension with the given title
+	 * 
+	 * @param title
+	 *            the title of the frame
+	 * @param image
+	 *            the {@link BufferedImage} to display
+	 * @param windowDimension
+	 *            the {@link Dimension} to set the image frame to
+	 */
+	public static void imshow(String title, BufferedImage image,
+			Dimension windowDimension) {
+		JFrame imshowFrame = getFrameWithImage(image);
+		imshowFrame.setTitle(title);
+		imshowFrame.setPreferredSize(windowDimension);
 		imshowFrame.setVisible(true);
 	}
 

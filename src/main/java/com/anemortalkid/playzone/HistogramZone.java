@@ -1,5 +1,7 @@
 package com.anemortalkid.playzone;
 
+import static com.anemortalkid.imgutils.Imshow.imshow;
+
 import java.net.MalformedURLException;
 import java.util.LinkedList;
 
@@ -12,9 +14,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import com.anemortalkid.imgutils.ImageConstants;
-import com.anemortalkid.imgutils.ImgHelper;
 import com.anemortalkid.imgutils.MatHelper;
-import static com.anemortalkid.imgutils.Imshow.*;
 
 public class HistogramZone {
 
@@ -50,7 +50,7 @@ public class HistogramZone {
 		for( int i = 0; i < (int)histSize.get(0, 0)[0]; i++ )
 		{                   
 		        double histVal = histogram.get(i,0)[0];
-				Core.line(
+				Imgproc.line(
 		                histImage,
 		                new org.opencv.core.Point( i, histImage.rows() ),
 		                new org.opencv.core.Point( i, histImage.rows()-Math.round( histVal )) ,
